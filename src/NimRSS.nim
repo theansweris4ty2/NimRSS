@@ -1,17 +1,18 @@
-import std/[os, httpclient, uri], rss, terminal
+import std/[httpclient, uri], rss, terminal
 
 
 proc main =
   let client = newHttpClient()
   defer:
       client.close()
-  
-     
+
+
   for line in lines("feeds.config"): 
     
     var res = initUri()
     parseUri(line, res)
     let feed = getRSS(line)
+   
     stdout.styledWriteLine(fgGreen, "FEED:", feed.title)
     echo "\n \n"
     for  index, item in feed.items:
@@ -23,5 +24,6 @@ proc main =
         var link = item.link
         stdout.styledWriteline(fgBlue, item.link)
         echo "\n"
+        
   
 main()
